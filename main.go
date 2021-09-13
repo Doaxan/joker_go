@@ -1,9 +1,9 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 )
 
@@ -28,14 +28,13 @@ type JokesRandom struct {
 type JokesCategories []string
 
 func main() {
-	flag.Parse()
-	args := flag.Args()
+	// flag.Parse() does not allow non-flag arguments, so use os.Args with switch
+	args := os.Args[1:]
 	if len(args) == 0 {
-		fmt.Println(helpMessage)
+		fmt.Println(randomJoke())
 		return
 	}
 
-	// flag does not allow non-flag arguments, so use switch
 	switch args[0] {
 	case "random":
 		fmt.Println(randomJoke())
@@ -57,6 +56,10 @@ func main() {
 		default:
 			fmt.Println(helpMessage)
 		}
+	case "-h":
+		fallthrough
+	case "--help":
+		fallthrough
 	default:
 		fmt.Println(helpMessage)
 	}
