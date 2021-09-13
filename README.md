@@ -1,6 +1,6 @@
 # Joker
 
-Get random dad jokes in terminal.
+Get random Chuck Norris jokes in terminal.
 
 This project fetch the [chucknorris.io API](https://api.chucknorris.io).
 
