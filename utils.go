@@ -78,7 +78,12 @@ func jokesCategoriesToMap(jokesCount int, categories []string) map[string][]stri
 // Write dataMap value to a file in the following format: <key>.txt
 func writeMapToFile(dataMap map[string][]string) error {
 	for key, slice := range dataMap {
-		file, err := os.Create(key + ".txt")
+		err := os.MkdirAll("jokes", os.ModePerm)
+		if err != nil {
+			return err
+		}
+
+		file, err := os.Create("jokes/" + key + ".txt")
 		if err != nil {
 			return err
 		}

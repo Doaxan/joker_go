@@ -23,7 +23,7 @@ Retrieve a random chuck joke
 ```bash
 joker random
 ```
-Get 5 random unique jokes for each of the existing categories and saves them to text files - one for each of the categories
+Get 5 random unique jokes for each of the existing categories and saves them to text files in ./jokes/ directory - one for each of the categories
 ```bash
 joker dump
 ```
