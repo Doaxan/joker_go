@@ -72,7 +72,7 @@ func dumpJokesToFiles(jokesCount int) {
 	var categories JokesCategories
 	decodeJsonToTarget(urlJokesCategories, &categories)
 
-	err := writeMapToFile(jokesCategoriesToMap(jokesCount, categories))
+	err := writeMapToFile(jokesCategoriesToMapConcurrent(jokesCount, categories))
 	if err != nil {
 		log.Fatal("writeMapToFile error occurred")
 	}

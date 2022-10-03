@@ -54,6 +54,44 @@ func getJsonToTarget(url string, target interface{}) error {
 }
 
 // Get randomJokeCategory and assigns it to map
+// Concurrent version using channels
+func jokesCategoriesToMapConcurrent(jokesCount int, categories []string) map[string][]string {
+	categoriesJokes := map[string][]string{}
+
+	categoriesChan := make(map[string]chan []string, len(categories))
+
+	for _, category := range categories {
+		categoriesChan[category] = make(chan []string, 1)
+		go func(category string) {
+			var jokes []string
+			for retryCount := 0; len(jokes) < jokesCount; retryCount++ {
+				joke := randomJokeCategory(category)
+				if contains(jokes, joke) {
+					if retryCount == jokeGetRetryCount {
+						break
+					}
+					retryCount++
+					continue
+				}
+				retryCount = 0
+				jokes = append(jokes, joke)
+			}
+			categoriesChan[category] <- jokes
+			close(categoriesChan[category])
+		}(category)
+	}
+
+	for _, category := range categories {
+		jokes, ok := <-categoriesChan[category]
+		if ok {
+			categoriesJokes[category] = jokes
+		}
+	}
+
+	return categoriesJokes
+}
+
+// Get randomJokeCategory and assigns it to map
 func jokesCategoriesToMap(jokesCount int, categories []string) map[string][]string {
 	categoriesJokes := map[string][]string{}
 	for _, category := range categories {
